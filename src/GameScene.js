@@ -54,13 +54,13 @@ export default class GameScene extends Phaser.Scene {
     });
 
     // health bar HP
-    this.playerHealth = 700; // Initialize player health to 100
+    this.playerHealth = 600; // Initialize player health to 100
     this.healthBar = this.add.graphics();
     this.healthBar.fillStyle(0x00ff00, 1); // Green color
     this.healthBar.fillRect(10, 10, this.playerHealth, 10); // Draw initial health bar
 
     this.score = 0;
-    this.scoreText = this.add.text(712, 10, "Score: 0", { fontSize: "16px", fill: "#fff" });
+    this.scoreText = this.add.text(680, 10, "Score: 0", { fontSize: "16px", fill: "#fff" });
 
     this.time.addEvent({
       delay: 1000,
