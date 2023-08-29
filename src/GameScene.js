@@ -16,25 +16,20 @@ export default class GameScene extends Phaser.Scene {
     // ship
     this.ship = this.physics.add.sprite(400, 300, "ship").setScale(0.15);
 
-    // // asteroids
-    // this.asteroids = this.physics.add.group({
-    //   key: "asteroid",
-    //   repeat: 5,
-    //   setXY: { x: 55, y: 50, stepX: 120 },
-    // });
-    // //Scale each asteroid in the group
-    // this.asteroids.children.iterate((asteroid) => {
-    //   asteroid.setScale(0.1); // Scale to 20%
-    // });
-
     // bullets
     this.bullets = this.physics.add.group();
 
-    // collisions
-    this.physics.add.collider(this.bullets, this.asteroids, (bullet, asteroid) => {
-      bullet.destroy();
-      asteroid.destroy();
-    });
+    // health bar
+    this.playerHealth = 700; // Initialize player health to 100
+    this.healthBar = this.add.graphics();
+    this.healthBar.fillStyle(0x00ff00, 1); // Green color
+    this.healthBar.fillRect(10, 10, this.playerHealth, 10); // Draw initial health bar
+  }
+
+  updateHealthBar() {
+    this.healthBar.clear();
+    this.healthBar.fillStyle(0x00ff00, 1);
+    this.healthBar.fillRect(10, 10, this.playerHealth, 10);
   }
 
   update() {
@@ -73,6 +68,16 @@ export default class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.bullets, asteroid, (bullet, asteroid) => {
         bullet.destroy();
         asteroid.destroy();
+      });
+
+      this.physics.add.collider(this.ship, asteroid, () => {
+        this.playerHealth -= 10; // Reduce health by 10
+        this.updateHealthBar();
+
+        // Check if health has reached zero or below
+        if (this.playerHealth <= 0) {
+          this.ship.setVisible(false);
+        }
       });
     }
   }
