@@ -53,7 +53,7 @@ export default class GameScene extends Phaser.Scene {
       hideOnComplete: true,
     });
 
-    // health bar
+    // health bar HP
     this.playerHealth = 700; // Initialize player health to 100
     this.healthBar = this.add.graphics();
     this.healthBar.fillStyle(0x00ff00, 1); // Green color
