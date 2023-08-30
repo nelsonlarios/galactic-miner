@@ -111,16 +111,13 @@ export default class GameScene extends Phaser.Scene {
       const asteroid = this.asteroids.create(800, randomY, "asteroid").setScale(0.15);
 
       asteroid.setVelocityX(-200);
-      this.physics.add.collider(this.bullets, asteroid, (bullet, asteroid) => {
-        bullet.destroy();
-        asteroid.destroy();
-
-        this.updateScore(2); // Gain 1 point
-      });
 
       this.physics.add.collider(this.ship, asteroid, () => {
-        this.playerHealth -= 10; // Reduce health by 10
+        this.playerHealth -= 200; // Reduce health by 10
         this.updateHealthBar();
+        const explosion = this.add.sprite(asteroid.x, asteroid.y, "explosion");
+        explosion.play("explode");
+        asteroid.destroy();
 
         // Check if health has reached zero or below
         if (this.playerHealth <= 0) {
@@ -131,7 +128,17 @@ export default class GameScene extends Phaser.Scene {
           }
 
           this.ship.setVisible(false);
+          this.gameOver();
         }
+      });
+
+      this.physics.add.collider(this.bullets, asteroid, (bullet, asteroid) => {
+        bullet.destroy();
+        const explosion = this.add.sprite(asteroid.x + 40, asteroid.y, "explosion");
+        explosion.play("explode");
+        asteroid.destroy();
+
+        this.updateScore(2); // Gain 1 point
       });
     }
 
